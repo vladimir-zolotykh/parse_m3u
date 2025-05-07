@@ -7,11 +7,11 @@ import re
 
 
 Song = namedtuple("Song", "title seconds filename")
-SONGS_TYPE = list[Song]
+PLAYLIST = list[Song]
 
 
-def parse_m3u(fh: io.TextIOBase) -> SONGS_TYPE:
-    songs: SONGS_TYPE = []
+def parse_m3u(fh: io.TextIOBase) -> PLAYLIST:
+    songs: PLAYLIST = []
     if fh.readline() != "#EXTM3U\n":
         print("This is not a .m3u file")
         return songs
@@ -37,6 +37,11 @@ def parse_m3u(fh: io.TextIOBase) -> SONGS_TYPE:
     return songs
 
 
+def parse_file(filename: str = "Various-Pop.m3u") -> PLAYLIST:
+    with open(filename) as fh:
+        return parse_m3u(fh)
+
+
 if __name__ == "__main__":
     with open("Various-Pop.m3u") as fh:
-        print(parse_m3u(fh))
+        print(parse_file())

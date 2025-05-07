@@ -56,7 +56,7 @@ def parse_m3u(fh: io.TextIOBase) -> PLAYLIST:
     return songs
 
 
-def parse_string(init_str: str) -> PLAYLIST:
+def parse_str(init_str: str) -> PLAYLIST:
     with io.StringIO(init_str) as so:
         return parse_m3u(so)
 

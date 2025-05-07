@@ -4,8 +4,9 @@
 import io
 from collections import namedtuple
 import re
+from enum import Enum
 
-
+State = Enum("State", ["WANT_INFO", "WANT_FILENAME"])
 Song = namedtuple("Song", "title seconds filename")
 PLAYLIST = list[Song]
 
@@ -16,24 +17,23 @@ def parse_m3u(fh: io.TextIOBase) -> PLAYLIST:
         print("This is not a .m3u file")
         return songs
     INFO_RE = re.compile(r"#EXTINF:(?P<seconds>-?\d+),(?P<title>.+)")
-    WANT_INFO, WANT_FILENAME = range(2)
-    state = WANT_INFO
+    state: State = State.WANT_INFO
     for lino, line in enumerate(fh, start=2):
         line = line.strip()
         if not line:
             continue
-        if state == WANT_INFO:
+        if state == State.WANT_INFO:
             info = INFO_RE.match(line)
             if info:
                 title = info.group("title")
                 seconds = int(info.group("seconds"))
-                state = WANT_FILENAME
+                state = State.WANT_FILENAME
             else:
                 print("Failed to parse line {0}: {1}".format(lino, line))
-        elif state == WANT_FILENAME:
+        elif state == State.WANT_FILENAME:
             songs.append(Song(title, seconds, line))
             title = seconds = None
-            state = WANT_INFO
+            state = State.WANT_INFO
     return songs
 
 

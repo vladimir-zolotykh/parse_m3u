@@ -5,6 +5,7 @@ import io
 from collections import namedtuple
 import re
 from enum import Enum
+from pprint import pprint
 
 State = Enum("State", ["WANT_INFO", "WANT_FILENAME"])
 Song = namedtuple("Song", "title seconds filename")
@@ -44,4 +45,4 @@ def parse_file(filename: str = "Various-Pop.m3u") -> PLAYLIST:
 
 if __name__ == "__main__":
     with open("Various-Pop.m3u") as fh:
-        print(parse_file())
+        pprint(parse_file())

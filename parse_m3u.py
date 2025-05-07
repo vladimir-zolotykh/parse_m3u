@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # PYTHON_ARGCOMPLETE_OK
 """
->>> parse_str("\
+>>> pprint(parse_str("\
 #EXTM3U\\n\
 #EXTINF:236,Various - Two Tribes\\n\
 Various/Frankie Goes To Hollywood/02-Two Tribes.ogg\\n\
@@ -14,9 +14,12 @@ Various/Frankie Goes To Hollywood/12-The Power of Love.ogg\\n\
 Various/Madonna/05-Material Girl.ogg\\n\
 #EXTINF:303,The Police - Walking On The Moon\\n\
 Various/Sting & The Police 1997/06-Walking On The Moon.ogg\\n\
-")
-[Song(title='Various - Two Tribes', seconds=236, filename='Various/Frankie Goes To Hollywood/02-Two Tribes.ogg'), Song(title='Various - Relax', seconds=237, filename='Various/Frankie Goes To Hollywood/01-Relax.ogg'), Song(title='Various - The Power of Love', seconds=330, filename='Various/Frankie Goes To Hollywood/12-The Power of Love.ogg'), Song(title='Various - Material Girl', seconds=-1, filename='Various/Madonna/05-Material Girl.ogg'), Song(title='The Police - Walking On The Moon', seconds=303, filename='Various/Sting & The Police 1997/06-Walking On The Moon.ogg')]
-
+"))
+[Song(title='Various - Two Tribes', seconds=236, filename='Various/Frankie Goes To Hollywood/02-Two Tribes.ogg'),
+ Song(title='Various - Relax', seconds=237, filename='Various/Frankie Goes To Hollywood/01-Relax.ogg'),
+ Song(title='Various - The Power of Love', seconds=330, filename='Various/Frankie Goes To Hollywood/12-The Power of Love.ogg'),
+ Song(title='Various - Material Girl', seconds=-1, filename='Various/Madonna/05-Material Girl.ogg'),
+ Song(title='The Police - Walking On The Moon', seconds=303, filename='Various/Sting & The Police 1997/06-Walking On The Moon.ogg')]
 """
 
 import io

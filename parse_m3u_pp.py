@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # PYTHON_ARGCOMPLETE_OK
+import io
 import pyparsing as pp
 
 
@@ -16,7 +17,11 @@ def m3u_bnf() -> pp.core.ParserElement:
     return m3u
 
 
-if __name__ == "__main__":
-    with open("Various-Pop.m3u") as fh:
+def parse_m3u_file(filename: str) -> pp.ParseResults:
+    with open(filename) as fh:
         d = m3u_bnf().parse_file(fh)
-    print(d)
+        return d
+
+
+if __name__ == "__main__":
+    print(parse_m3u_file("Various-Pop.m3u"))

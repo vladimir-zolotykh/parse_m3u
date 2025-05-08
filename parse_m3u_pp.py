@@ -11,7 +11,7 @@ def m3u_bnf() -> pp.core.ParserElement:
     seconds = pp.Regex(r"-?\d+").set_results_name("seconds")
     info = pp.Suppress("#EXTINF:") + seconds + pp.Suppress(",") + title
     nl = pp.LineEnd().suppress()
-    entry = info + nl + filename + nl
+    entry = pp.Group(info + nl + filename) + nl
     m3u = hdr + nl + pp.OneOrMore(entry)
     return m3u
 

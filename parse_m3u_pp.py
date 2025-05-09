@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # PYTHON_ARGCOMPLETE_OK
 import io
+from pathlib import Path
 import pyparsing as pp
 
 
@@ -17,11 +18,11 @@ def m3u_bnf() -> pp.core.ParserElement:
     return m3u
 
 
-def parse_m3u_file(filename: str) -> pp.ParseResults:
+def parse_m3u_file(filename: str | Path) -> pp.ParseResults:
     with open(filename) as fh:
         d = m3u_bnf().parse_file(fh)
         return d
 
 
 if __name__ == "__main__":
-    print(parse_m3u_file("Various-Pop.m3u"))
+    print(parse_m3u_file(Path("Various-Pop.m3u")))

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # PYTHON_ARGCOMPLETE_OK
-import io
+from typing import TextIO
 from pathlib import Path
 import pyparsing as pp
 
@@ -18,10 +18,13 @@ def m3u_bnf() -> pp.core.ParserElement:
     return m3u
 
 
+def parse_m3u_fh(fh: TextIO) -> pp.ParseResults:
+    return m3u_bnf().parse_file(fh)
+
+
 def parse_m3u_file(filename: str | Path) -> pp.ParseResults:
     with open(filename) as fh:
-        d = m3u_bnf().parse_file(fh)
-        return d
+        return parse_m3u_fh(fh)
 
 
 if __name__ == "__main__":

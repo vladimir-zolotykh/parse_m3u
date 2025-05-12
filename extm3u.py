@@ -3,6 +3,8 @@
 # PYTHON_ARGCOMPLETE_OK
 import io
 import re
+import enum
+from collections import namedtuple
 
 various_pop = """\
 #EXTM3U
@@ -24,8 +26,39 @@ class ParseError(Exception):
 
 
 if __name__ == "__main__":
+    State = enum.Enum("State", "HEADER INFO FILENAME")
+    Song = namedtuple("Song", "title length filename")
+    songs: list[Song] = []
     with io.StringIO(various_pop) as so:
+        state: State = State.HEADER
         for line_no, line in enumerate(so, 1):
-            if line_no == 1 and not re.match(r"^#EXTM3U", line):
-                raise ParseError()
-            print(line, end="")
+
+            def make_error(msg: str) -> None:
+                raise ParseError(msg, line_no, line)
+
+            length: int = 0
+            title: str = ""
+            filename: str = ""
+            if state == State.HEADER:
+                if not re.match(r"^#EXTM3U", line):
+                    make_error("Want HEADER")
+                else:
+                    state = State.INFO
+            elif state == State.INFO:
+                m = re.match(r"^#EXTINF:(?P<seconds>-?\d+),(?P<title>[^\n]+)", line)
+                if not m:
+                    make_error("Want INFO")
+                else:
+                    seconds = int(m.group("seconds"))
+                    title = m.group("title")
+                    state = State.FILENAME
+            elif state == state.FILENAME:
+                m = re.match(r"^(?P<filename>[^\n]+)", line)
+                if not m:
+                    make_error("Want FILENAME")
+                else:
+                    songs.append(Song(title, length, m.group("filename")))
+                    state = State.INFO
+            else:
+                assert True, f"{state}: Valid states are HEADER, INFO, FILENAME"
+        print(songs)

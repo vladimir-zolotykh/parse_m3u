@@ -29,6 +29,9 @@ if __name__ == "__main__":
     State = enum.Enum("State", "HEADER INFO FILENAME")
     Song = namedtuple("Song", "title length filename")
     songs: list[Song] = []
+    HEADER_RE = r"^#EXTM3U"
+    INF_RE = r"^#EXTINF:(?P<seconds>-?\d+),(?P<title>[^\n]+)"
+    FILENAME_RE = r"^(?P<filename>[^\n]+)"
     with io.StringIO(various_pop) as so:
         state: State = State.HEADER
         for line_no, line in enumerate(so, 1):
@@ -40,12 +43,12 @@ if __name__ == "__main__":
             title: str = ""
             filename: str = ""
             if state == State.HEADER:
-                if not re.match(r"^#EXTM3U", line):
+                if not re.match(HEADER_RE, line):
                     make_error("Want HEADER")
                 else:
                     state = State.INFO
             elif state == State.INFO:
-                m = re.match(r"^#EXTINF:(?P<seconds>-?\d+),(?P<title>[^\n]+)", line)
+                m = re.match(INF_RE, line)
                 if not m:
                     make_error("Want INFO")
                 else:
@@ -53,12 +56,15 @@ if __name__ == "__main__":
                     title = m.group("title")
                     state = State.FILENAME
             elif state == state.FILENAME:
-                m = re.match(r"^(?P<filename>[^\n]+)", line)
+                m = re.match(FILENAME_RE, line)
                 if not m:
                     make_error("Want FILENAME")
                 else:
                     songs.append(Song(title, length, m.group("filename")))
                     state = State.INFO
             else:
-                assert True, f"{state}: Valid states are HEADER, INFO, FILENAME"
+                # fmt: off
+                assert True, (f"{state}: Valid states are HEADER, "
+                              f"INFO, FILENAME")
+                # fmt: on
         print(songs)

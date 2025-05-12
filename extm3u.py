@@ -13,6 +13,7 @@ import io
 import re
 import enum
 from collections import namedtuple
+from pprint import PrettyPrinter
 
 various_pop = """\
 #EXTM3U
@@ -33,6 +34,18 @@ SONGS_T = list[Song]
 
 class ParseError(Exception):
     pass
+
+
+class SongPrettyPrinter(PrettyPrinter):
+    def _format(self, obj, stream, indent, allowance, context, level):
+        if isinstance(obj, Song):
+            stream.write("Song(\n")
+            stream.write(f"  title={repr(obj.title)},\n")
+            stream.write(f"  seconds={obj.seconds},\n")
+            stream.write(f"  filename={repr(obj.filename)}\n")
+            stream.write(")")
+        else:
+            super()._format(obj, stream, indent, allowance, context, level)
 
 
 def parse_m3u(m3u_str: str) -> SONGS_T:
@@ -79,6 +92,8 @@ def parse_m3u(m3u_str: str) -> SONGS_T:
 
 
 if __name__ == "__main__":
-    import doctest
+    # import doctest
 
-    doctest.testmod()
+    # doctest.testmod()
+    pp = SongPrettyPrinter(width=72)
+    pp.pprint(parse_m3u(various_pop))

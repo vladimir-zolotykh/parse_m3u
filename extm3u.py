@@ -2,12 +2,33 @@
 # -*- coding: utf-8 -*-
 # PYTHON_ARGCOMPLETE_OK
 """
->>> print(parse_m3u(various_pop))
-[Song(title='Various - Two Tribes', seconds=236, filename='Various/Frankie Goes To Hollywood/02-Two Tribes.ogg'), \
-Song(title='Various - Relax', seconds=237, filename='Various/Frankie Goes To Hollywood/01-Relax.ogg'), \
-Song(title='Various - The Power of Love', seconds=330, filename='Various/Frankie Goes To Hollywood/12-The Power of Love.ogg'), \
-Song(title='Various - Material Girl', seconds=-1, filename='Various/Madonna/05-Material Girl.ogg'), \
-Song(title='The Police - Walking On The Moon', seconds=303, filename='Various/Sting & The Police 1997/06-Walking On The Moon.ogg')]
+>>> pp = SongPrettyPrinter(width=72)
+>>> pp.pprint(parse_m3u(various_pop))
+[Song(
+  title='Various - Two Tribes',
+  seconds=236,
+  filename='Various/Frankie Goes To Hollywood/02-Two Tribes.ogg'
+),
+ Song(
+  title='Various - Relax',
+  seconds=237,
+  filename='Various/Frankie Goes To Hollywood/01-Relax.ogg'
+),
+ Song(
+  title='Various - The Power of Love',
+  seconds=330,
+  filename='Various/Frankie Goes To Hollywood/12-The Power of Love.ogg'
+),
+ Song(
+  title='Various - Material Girl',
+  seconds=-1,
+  filename='Various/Madonna/05-Material Girl.ogg'
+),
+ Song(
+  title='The Police - Walking On The Moon',
+  seconds=303,
+  filename='Various/Sting & The Police 1997/06-Walking On The Moon.ogg'
+)]
 """
 import io
 import re
@@ -92,8 +113,6 @@ def parse_m3u(m3u_str: str) -> SONGS_T:
 
 
 if __name__ == "__main__":
-    # import doctest
+    import doctest
 
-    # doctest.testmod()
-    pp = SongPrettyPrinter(width=72)
-    pp.pprint(parse_m3u(various_pop))
+    doctest.testmod()
